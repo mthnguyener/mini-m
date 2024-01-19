@@ -63,6 +63,12 @@ the project.
 make getting-started
 ```
 
+### Run mini-M:
+To run mini-M, run the following command at project root where `Makefile` is located.
+```bash
+make mini-m
+```
+
 ### Jupyter Notebooks
 While Jupyter notebooks are not ideal for source code, they can be powerful
 when applied to path finding and creating training material.
