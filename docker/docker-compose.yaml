@@ -1,0 +1,89 @@
+networks:
+  minim-network:
+    name: ${COMPOSE_PROJECT_NAME:-default}-minim-network
+secrets:
+  package:
+    file: secrets/package.txt
+  gemini:
+    file: secrets/gemini.txt
+services:
+  nginx:
+    container_name: ${COMPOSE_PROJECT_NAME:-default}_minim_nginx
+    env_file: .env
+    environment:
+      PORT_NGINX: ${PORT_NGINX}
+    image: nginx:alpine
+    networks:
+    - minim-network
+    ports:
+    - ${PORT_NGINX}:80
+    restart: always
+    volumes:
+    - ../docs/_build/html:/usr/share/nginx/html:ro
+  python:
+    build:
+      context: ..
+      dockerfile: docker/pytorch.Dockerfile
+      shm_size: 1g
+    cap_add:
+    - SYS_PTRACE
+    container_name: ${COMPOSE_PROJECT_NAME:-default}_minim_python
+    deploy:
+      resources:
+        reservations:
+          devices:
+          - capabilities:
+            - gpu
+    env_file: .env
+    environment:
+    - ENVIRONMENT=${ENVIRONMENT}
+    - PORT_DASH=${PORT_DASH}
+    - PORT_GOOGLE=${PORT_GOOGLE}
+    - PORT_JUPYTER=${PORT_JUPYTER}
+    - PORT_MLFLOW=${PORT_MLFLOW}
+    - PORT_PROFILE=${PORT_PROFILE}
+    - PORT_RAY_DASHBOARD=${PORT_RAY_DASHBOARD}
+    - PORT_RAY_SERVER=${PORT_RAY_SERVER}
+    image: minim_python
+    ipc: host
+    networks:
+    - minim-network
+    ports:
+    - ${PORT_DASH}:${PORT_DASH}
+    - ${PORT_GOOGLE}:${PORT_GOOGLE}
+    - ${PORT_JUPYTER}:${PORT_JUPYTER}
+    - ${PORT_MLFLOW}:5000
+    - ${PORT_PROFILE}:${PORT_PROFILE}
+    - ${PORT_RAY_DASHBOARD}:${PORT_RAY_DASHBOARD}
+    - ${PORT_RAY_SERVER}:${PORT_RAY_SERVER}
+    restart: always
+    secrets:
+    - gemini
+    - package
+    shm_size: 24g
+    tty: true
+    ulimits:
+      memlock: -1
+    user: ${USERID}
+    volumes:
+    - ..:/usr/src/minim
+    - ${DATA_DIR}:/usr/src/minim/data
+    - minim-secret:/usr/src/minim/docker/secrets
+  streamlit:
+    build:
+      context: ..
+      dockerfile: docker/streamlit.Dockerfile
+    container_name: ${COMPOSE_PROJECT_NAME:-default}_minim_streamlit
+    env_file: .env
+    environment:
+      PORT_STREAMLIT: ${PORT_STREAMLIT}
+    image: minim_streamlit
+    networks:
+    - minim-network
+    ports:
+    - $PORT_STREAMLIT:8501
+    restart: always
+    volumes:
+    - ../applications/streamlit:/usr/src/minim/applications/streamlit
+volumes:
+  minim-secret: null
