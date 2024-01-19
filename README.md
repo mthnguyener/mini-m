@@ -15,6 +15,11 @@ mini-M is a fully functioning Python package that may be installed using
 Docker Images are built into the package and a Makefile provides an easy to call
 repetitive commands.
 
+Additionally, to run this you will need to request for Gemini
+API: https://ai.google.dev/tutorials/python_quickstart. Replace `gemini` in 
+`docker/secrets/gemini.txt` with your Gemini API. To use OpenAI, updates to 
+response fields relating to function calling are required.
+
 ### mini-M Structure
 - `app`: Applications directory where new apps can be added
   - `streamlit`: Streamlit service with sample pages (missing test atm)

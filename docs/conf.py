@@ -7,8 +7,8 @@
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = 'minim'
-copyright = '2024, Minh'
-author = 'Minh'
+copyright = '2024, Minh Nguyen'
+author = 'Minh Nguyen'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration

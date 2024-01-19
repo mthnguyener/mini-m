@@ -64,7 +64,6 @@ services:
     tty: true
     ulimits:
       memlock: -1
-    user: ${USERID}
     volumes:
     - ..:/usr/src/minim
     - ${DATA_DIR}:/usr/src/minim/data
