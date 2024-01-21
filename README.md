@@ -45,7 +45,7 @@ First, make a local copy of the project.
 After setting up SSH keys on GitHub call the following command to clone the
 repository.
 ```bash
-git clone <enter_path_to_repo>.git
+git clone https://github.com/mthnguyener/mini-m.git
 ```
 A directory called `mini_m` will be created where the 
 command was executed. This `mini_m` directory will be 
@@ -110,6 +110,21 @@ directory.
 make format-style
 ```
 
+## Documentation
+The package also has an NGINX container to host interactive documentation.
+Calling the following commands from the package root directory will result in
+a local web browser displaying the package HTML documentation.
+
+### Build Documentation
+```bash
+make docs
+```
+
+### View Documentation without Building
+```bash
+make docs-view
+```
+
 ### Makefile Code Completion
 It's handy to have code completion when calling targets from the Makefile.
 To enable this feature add the following to your user profile file.
@@ -129,21 +144,6 @@ There is a make target to update the requirements file.
 
 ```bash
 make package-dependencies
-```
-
-## Documentation
-The package also has an NGINX container to host interactive documentation.
-Calling the following commands from the package root directory will result in
-a local web browser displaying the package HTML documentation.
-
-### Build Documentation
-```bash
-make docs
-```
-
-### View Documentation without Building
-```bash
-make docs-view
 ```
 
 ## Profilers

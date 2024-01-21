@@ -77,7 +77,7 @@ docker-update-compose-file:
 docs: docker-up
 	@$(DOCKER_CMD) container exec $(CONTAINER_PREFIX)_python \
 		/bin/bash -c "cd docs && make html"
-	@${BROWSER} http://localhost:$(PORT_NGINX)/index.html 2>&1 &
+	@${BROWSER} http://localhost:$(PORT_NGINX) 2>&1 &
 
 docs-first-run-delete: docker-up
 	find docs -maxdepth 1 -type f -delete
@@ -144,7 +144,7 @@ docs-init:
 	@git checkout origin/main -- docs/
 
 docs-view: docker-up
-	@${BROWSER} http://localhost:$(PORT_NGINX)/index.html &
+	@${BROWSER} http://localhost:$(PORT_NGINX) &
 
 format-style: docker-up
 	$(DOCKER_CMD) container exec $(CONTAINER_PREFIX)_python yapf -i -p -r --style "pep8" ${SRC_DIR}
