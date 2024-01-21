@@ -127,5 +127,6 @@ def start_g_agent(prompt: Dict,
                   prompts=prompts,
                   topic=knowledge_topic)
 
+
 if __name__ == "__main__":
     pass
