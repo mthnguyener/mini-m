@@ -7,16 +7,22 @@ import json
 import os
 import requests
 import sys
-from typing import Dict, List
+from typing import Dict, List, Tuple
 
 import minim.gemini.write_file_function as write_file
+from minim.input import user_input
 from minim.pkg_globals import PACKAGE_ROOT
 from minim.utils import docker_secret
 
 api_key = docker_secret("gemini")
 
 
-def parse_function_response(prompt: List):
+def parse_function_response(prompt: List) -> Tuple[str, str]:
+    """ Parse the response
+
+    :param prompt: Prompt from user
+    :return: Function being called and response
+    """
     function_call = prompt[0]["functionCall"]
     function_name = function_call["name"]
 
@@ -36,8 +42,19 @@ def parse_function_response(prompt: List):
     return function_name, function_response
 
 
-def start_g_agent(prompt: Dict, domain: str = None, prompts: List[Dict] = None):
-    default_domain = knowledge_domain = domain
+def start_g_agent(prompt: Dict,
+                  domain: str = None,
+                  prompts: List[Dict] = None,
+                  topic: str = None):
+    """Start Gemini Agent
+
+    :param prompt: Prompt from user
+    :param domain: Knowledge domain
+    :param prompts: List of prompts from user
+    :param topic: Knowledge topic
+    """
+    knowledge_domain = domain
+    knowledge_topic = topic
 
     if prompts is None:
         prompts = []
@@ -45,11 +62,9 @@ def start_g_agent(prompt: Dict, domain: str = None, prompts: List[Dict] = None):
     prompts.append(prompt)
 
     dirname = PACKAGE_ROOT / "data/minim"
-
     if not os.path.exists(dirname):
         os.makedirs(dirname)
-
-    with open(f'{dirname}/history.json', "w") as f:
+    with open(f'{dirname}/{knowledge_topic}_history.json', "w") as f:
         json.dump(prompts, f, indent=4)
 
     data = {
@@ -78,11 +93,12 @@ def start_g_agent(prompt: Dict, domain: str = None, prompts: List[Dict] = None):
     prompt = response["candidates"][0]["content"]["parts"]
     prompts.append({
         "role": "model",
-        "parts": prompt
+        "parts": prompt,
     })
 
     if "functionCall" in prompt[0]:
         content = prompt[0]["functionCall"]["args"]["content"]
+
         function_name, function_response = parse_function_response(
             prompt=prompt)
 
@@ -101,74 +117,15 @@ def start_g_agent(prompt: Dict, domain: str = None, prompts: List[Dict] = None):
     else:
         print(f'\nmini-M: {prompt[0]["text"]}')
 
-        user_prompt = input("\nYou: ")
+        knowledge_domain, knowledge_topic, prompt, prompts = \
+            user_input(knowledge_domain=knowledge_domain,
+                       knowledge_topic=knowledge_topic,
+                       prompts=prompts)
 
-        if user_prompt == "minim.domain":
-            new_domain = input(f'\nmini-M: Which domain should I focus on?: ')
-            knowledge_domain = new_domain
-            print(f"mini-M: Knowledge domain was changed successfully!")
-        elif user_prompt == "minim.domain.default":
-            knowledge_domain = default_domain
-            print(f"mini-M: Knowledge domain has been reverted back "
-                  f"to default!")
-        elif user_prompt == "bye bud":
-            print(f"mini-M: Goodbye "
-                  f"{os.environ.get('COMPOSE_PROJECT_NAME')}")
-            sys.exit(1)
-
-        if (user_prompt == "minim.domain" or
-                user_prompt == "minim.domain.default"):
-            print(f"mini-M: Now that my knowledge domain has been "
-                  f"updated, how can I help you?")
-            user_prompt = input("\nYou: ")
-
-        prompt = {
-            "role": "user",
-            "parts": [{"text": knowledge_domain + "\n\n" + user_prompt}]
-        }
-
-    start_g_agent(domain=knowledge_domain, prompt=prompt, prompts=prompts)
-
+    start_g_agent(domain=knowledge_domain,
+                  prompt=prompt,
+                  prompts=prompts,
+                  topic=knowledge_topic)
 
 if __name__ == "__main__":
-    username = os.environ.get('COMPOSE_PROJECT_NAME')
-
-    print(f"mini-M: Hiya, {username}! How can I help you?")
-
-    prompts = []
-
-    default_domain = (
-        "You are an AI bot with a vast library of functions at your disposal. "
-        "You can access and execute functions to accomplish various tasks "
-        "across diverse domains, including coding, writing, data manipulation, "
-        "and more. Your primary mode of operation is through function calls"
-    )
-
-    user_prompt = input("\nYou: ")
-
-    knowledge_domain = default_domain
-
-    if user_prompt == "minim.domain":
-        new_domain = input(f'\nmini-M: Which domain should I focus on?: ')
-        knowledge_domain = new_domain
-        print(f"mini-M: Knowledge domain was changed successfully!")
-    elif user_prompt == "minim.domain.default":
-        knowledge_domain = default_domain
-        print(f"mini-M: Knowledge domain has been reverted back to default!")
-    elif user_prompt == "bye bud":
-        print(f"mini-M: Goodbye {username}")
-        sys.exit(1)
-
-    if (user_prompt == "minim.domain" or
-            user_prompt == "minim.domain.default"):
-        print(f"mini-M: Now that my knowledge domain has been updated,"
-              f" how can I help you?")
-        user_prompt = input("\nYou: ")
-
-    prompt = {
-        "role": "user",
-        "parts": [{"text": knowledge_domain + "\n\n" + user_prompt}]
-    }
-
-    start_g_agent(domain=knowledge_domain, prompt=prompt,
-                  prompts=prompts)
+    pass

@@ -7,6 +7,7 @@ from dataclasses import dataclass
 
 import google.generativeai as genai
 
+from minim.pkg_globals import USERNAME
 from minim.utils import docker_secret
 
 genai.configure(api_key=docker_secret("gemini"))
@@ -36,7 +37,7 @@ if __name__ == "__main__":
     gemini = Gemini()
 
     while True:
-        message = input("You: ")
+        message = input(f'{USERNAME}: ')
         if message == "quit":
             break
         elif message == "chat.history":
@@ -48,4 +49,3 @@ if __name__ == "__main__":
         else:
             response = gemini.get_chat_response(prompt=message)
             print("Gemini: " + response)
-

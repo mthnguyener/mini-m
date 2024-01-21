@@ -26,3 +26,10 @@ class Error(Exception):
 
 class InputError(Error):
     """Exception raised for errors in the input."""
+
+class InputTooLongError(Error):
+    """Exception raised for errors in the input being too long."""
+
+
+class InvalidCharactersError(Error):
+    """Exception raised for errors in invalid characters."""

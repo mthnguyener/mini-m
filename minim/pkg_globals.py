@@ -3,6 +3,7 @@
 """ Global Variable Module
 
 """
+import os
 from pathlib import Path
 
 PACKAGE_ROOT = Path(__file__).parents[1]
@@ -42,6 +43,9 @@ PLOTLY_FONTS = {
 TENSORBOARD_DIR = PACKAGE_ROOT / 'ai_logs'
 
 TIME_FORMAT = '%Y_%m_%d_%H_%M_%S'
+
+USERNAME = os.environ.get('COMPOSE_PROJECT_NAME')
+
 
 if __name__ == '__main__':
     pass

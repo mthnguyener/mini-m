@@ -30,7 +30,11 @@ definitions = [
 ]
 
 
-def parse_content(content):
+def parse_content(content: str):
+    """Parse the content
+
+    :param content: Content to parse
+    """
     content = content.replace("\\n", "|n|")
     content = content.replace("\\'", "\'")
     content = content.replace("\\\"", "\"")
@@ -38,7 +42,12 @@ def parse_content(content):
     return content
 
 
-def write_file(filename, content):
+def write_file(content: str, filename: str):
+    """Write content to a file
+
+    :param content: Content used to write to file
+    :param filename: Filename to write to
+    """
     content = parse_content(content)
     confirmation = input(f"\nmini-M: Should I proceed with writing to "
                          f"{filename}? (YES/NO) ")
