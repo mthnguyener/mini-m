@@ -1,11 +1,16 @@
-#  mini-M
+<p align="center">
+    <img src="./assets/mini-m.jpg" alt="mini-M" width="256" height="auto"/>
+</p>
+
 mini-M is a personal assistant taking prompt/instruction from users to generate 
 contents and files. At default, mini-M is set to have "diverse domains" including 
 coding, writing, data manipulation. However, its knowledge domain can be updated 
 interactively. To fully utilize domain switch, implementing RAG or fine-tuning is
 needed. Here's a sample RAG pipeline:
 
-<img src="./assets/rag_diagram.png" alt="Microservice Diagram" width="768" height="auto"/>
+<p align="center">
+    <img src="./assets/rag_diagram.png" alt="Microservice Diagram" width="768" height="auto"/>
+</p>
 
 mini-M was made using PyProject Starter: https://github.com/mthnguyener/pyproject_starter
 
@@ -34,15 +39,6 @@ response fields relating to function calling are required.
   - `configs`: Project configuration files
   - `test`: Project unit tests
 - `scripts`: Folder with setup related scripts
-
-### Makefile Code Completion
-It's handy to have code completion when calling targets from the Makefile.
-To enable this feature add the following to your user profile file.
-- On Ubuntu this would be your `~/.profile` file.
-- On a Mac this would be you `~/.bash_profile` file.
-```bash
-complete -W "`grep -oE '^[a-zA-Z0-9_.-]+:([^=]|$)' Makefile | sed 's/[^a-zA-Z0-9_.-]*$//'`" make
-```
 
 ### Clone the Repository
 First, make a local copy of the project.
@@ -112,6 +108,15 @@ To only run the YAPF style linter call this command from the package root
 directory.
 ```bash
 make format-style
+```
+
+### Makefile Code Completion
+It's handy to have code completion when calling targets from the Makefile.
+To enable this feature add the following to your user profile file.
+- On Ubuntu this would be your `~/.profile` file.
+- On a Mac this would be you `~/.bash_profile` file.
+```bash
+complete -W "`grep -oE '^[a-zA-Z0-9_.-]+:([^=]|$)' Makefile | sed 's/[^a-zA-Z0-9_.-]*$//'`" make
 ```
 
 ## Dependencies

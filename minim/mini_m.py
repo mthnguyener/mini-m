@@ -10,6 +10,7 @@ from minim.gemini.gemini import Gemini
 from minim.input import DEFAULT_DOMAIN, DEFAULT_TOPIC, user_input
 from minim.pkg_globals import USERNAME
 
+
 @dataclass
 class MiniM:
     g_model_name: str = "gemini-pro"
