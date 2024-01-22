@@ -10,7 +10,7 @@ sys.path.insert(0, os.path.abspath('../minim/'))
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-project = 'minim'
+project = 'mini-M'
 copyright = '2024, Minh Nguyen'
 author = 'Minh Nguyen'
 
