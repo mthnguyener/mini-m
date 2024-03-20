@@ -153,7 +153,7 @@ getting-started: secret-templates docs-init
 	@mkdir -p cache \
 	    && mkdir -p data \
 		&& mkdir -p htmlcov \
-		%% mkdir -p logs/tests \
+		&& mkdir -p logs/tests \
 		&& mkdir -p notebooks \
 		&& mkdir -p profiles \
 		&& mkdir -p wheels \
@@ -168,7 +168,7 @@ latexmk: docker-up
 		/bin/bash -c "latexmk -f -pdf $(TEX_FILE) && latexmk -c"
 
 mlflow: docker-up mlflow-server
-		&& printf "%s\n" \
+	@printf "%s\n" \
 			"" \
 			"" \
 			"" \
@@ -289,7 +289,7 @@ snakeviz-server: docker-up
 				--server &"
 
 tensorboard: docker-up tensorboard-server
-		&& printf "%s\n" \
+	@printf "%s\n" \
 			"" \
 			"" \
 			"" \
