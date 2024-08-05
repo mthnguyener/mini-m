@@ -2,6 +2,8 @@
     <img src="./assets/mini-m.jpg" alt="mini-M" width="256" height="auto"/>
 </p>
 
+TESTING
+
 mini-M is a personal assistant taking prompt/instruction from users to generate 
 contents and files. At default, mini-M is set to have "diverse domains" including 
 coding, writing, data manipulation. However, its knowledge domain can be updated 
